@@ -1,0 +1,26 @@
+{
+  "name": "PlexMusic",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native-desktop/local-cli/cli.js start"
+  },
+  "browser": {
+    "react-native": "react-native-desktop"
+  },
+  "dependencies": {
+    "axios": "^0.12.0",
+    "buffer": "^4.7.0",
+    "events": "^1.1.1",
+    "fuse.js": "^2.2.0",
+    "lodash": "^4.13.1",
+    "react": "^15.1.0-alpha.1",
+    "react-native-desktop": "^0.8.7",
+    "react-native-vector-icons": "^2.0.3",
+    "stream": "0.0.2",
+    "thenby": "^1.2.1",
+    "timers": "^0.1.1",
+    "xml2js": "^0.4.16",
+    "xmldom": "^0.1.22"
+  }
+}
