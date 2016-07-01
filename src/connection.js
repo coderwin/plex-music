@@ -103,7 +103,7 @@ export default function connect(endpoint) {
                   }
                 })
 
-                return _.uniqBy(tracks.sort(sortBy("path").thenBy("number")), "number")
+                return tracks.sort(sortBy("path").thenBy("number"))
               });
             }
           },
