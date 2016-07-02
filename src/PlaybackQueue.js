@@ -11,7 +11,7 @@ setInterval(() => {
   AudioPlayer.getDuration((e, duration) => {
     events.emit("duration", duration)
   })
-}, 100);
+}, 1000);
 
 PlaybackQueue = {
   events: events,
@@ -21,14 +21,14 @@ PlaybackQueue = {
 
   pause() {
     AudioPlayer.pause()
-    this.events.emit("pause")
     this.isPlaying = false
+    this.events.emit("pause")
   },
 
   resume() {
     AudioPlayer.resume()
-    this.events.emit("play", this.playlist[this.activeIndex])
     this.isPlaying = true
+    this.events.emit("play", this.playlist[this.activeIndex])
   },
 
   stop() {
@@ -64,20 +64,20 @@ PlaybackQueue = {
     }
   },
 
-  seekTo() {
+  seekTo(time) {
     AudioPlayer.setCurrentTime(time)
   },
 
   replace(playlist, shouldPlay = false) {
-    this.events.emit("change", playlist)
     this.playlist = playlist
+    this.events.emit("change", playlist)
     if (shouldPlay) {
       this.playItemAtIndex(0)
     }
   }
 }
 
-DeviceEventEmitter.addListener('AudioPlayerDidFinishPlaying', PlaybackQueue.stop);
+DeviceEventEmitter.addListener('AudioPlayerDidFinishPlaying', () => PlaybackQueue.playNext());
 
 export default PlaybackQueue
 

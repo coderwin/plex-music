@@ -9,8 +9,8 @@ import {
   View,
   TouchableWithoutFeedback
 } from "react-native-desktop";
-
 import Subscribable from "Subscribable";
+import Icon from "react-native-vector-icons/FontAwesome";
 import Playlist from "./Playlist";
 import NowPlaying from "./NowPlaying";
 import AlbumListScreen from "./AlbumListScreen";
@@ -52,15 +52,6 @@ export default React.createClass({
     this.setState({isPlaying: false})
   },
 
-  renderToolbar() {
-    return (
-      <View style={{flexDirection: 'row', height: 37, paddingHorizontal: 8}}>
-        <View style={{flex: 1}}/>
-        <Text style={{fontWeight: "bold"}}>{this.props.connection.friendlyName}</Text>
-      </View>
-    )
-  },
-
   renderPlayerBar() {
     if (this.state.isPlaying) {
       return (
@@ -74,18 +65,14 @@ export default React.createClass({
 
   render() {
     return (
-      <View style={{flex: 1, flexDirection: 'column'}}>
-        {this.renderToolbar()}
-
-        <View style={{flex: 1}}>
-          <View style={{flex: 1, flexDirection: 'row', backgroundColor: "white"}}>
-            <AlbumListScreen connection={this.props.connection}/>
-            <View style={{width: 1, backgroundColor: "#ddd"}}/>
-            <Playlist />
-          </View>
-
-          {this.renderPlayerBar()}
+      <View style={{flex: 1}}>
+        <View style={{flex: 1, flexDirection: 'row', backgroundColor: "white"}}>
+          <AlbumListScreen connection={this.props.connection}/>
+          <View style={{width: 1, backgroundColor: "#ddd"}}/>
+          <Playlist />
         </View>
+
+        {this.renderPlayerBar()}
       </View>
     );
   }

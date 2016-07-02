@@ -48,10 +48,13 @@ export default React.createClass({
 
   handleSeek(time) {
     PlaybackQueue.seekTo(time)
+    this.setState({isSeeking: false})
   },
 
   handleTime(time) {
-    this.setState({currentTime: time})
+    if (!this.state.isSeeking) {
+      this.setState({currentTime: time})
+    }
   },
 
   pause() {
@@ -74,7 +77,8 @@ export default React.createClass({
           <Text>{formatDuration(this.state.currentTime)}</Text>
           <View style={{width: 10}}></View>
           <Slider style={{flex: 1}} value={this.state.currentTime} maximumValue={this.state.duration}
-                  onValueChange={(value) => this.handleSeek(value)}/>
+                  onSlidingComplete={(value) => {this.handleSeek(value)}}
+                  onValueChange={() => this.setState({isSeeking: true})}/>
           <View style={{width: 10}}></View>
           <Text>{formatDuration(this.state.duration)}</Text>
         </View>

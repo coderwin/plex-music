@@ -6,8 +6,8 @@
 #import "RCTRootView.h"
 #import <Cocoa/Cocoa.h>
 
-@interface AppDelegate() <RCTBridgeDelegate, NSSearchFieldDelegate>
-
+@interface AppDelegate() <RCTBridgeDelegate>
+@property (nonatomic, strong) NSWindowController* windowController;
 @end
 
 @implementation AppDelegate
@@ -23,56 +23,30 @@
                                                     defer:NO];
     
           
-      NSWindowController *windowController = [[NSWindowController alloc] initWithWindow:self.window];
+      self.windowController = [[NSWindowController alloc] initWithWindow:self.window];
 
       [[self window] setTitleVisibility:NSWindowTitleHidden];
       [[self window] setTitlebarAppearsTransparent:YES];
       [[self window] setAppearance:[NSAppearance appearanceNamed:NSAppearanceNameVibrantLight]];
 
-      [windowController showWindow:self.window];
-      [windowController setShouldCascadeWindows:NO];
-      [windowController setWindowFrameAutosaveName:@"Plex Music"];
-
-      NSToolbar *toolbar = [[NSToolbar alloc] initWithIdentifier:@"Toolbar"];
-      [toolbar setDelegate:self];
-      [toolbar setSizeMode:NSToolbarSizeModeRegular];
-      [self.window setToolbar:toolbar];
+      [_windowController showWindow:self.window];
+      [_windowController setShouldCascadeWindows:NO];
+      [_windowController setWindowFrameAutosaveName:@"Plex Music"];
 
       [self setUpApplicationMenu];
     }
     return self;
 }
 
-- (NSToolbarItem *)toolbar:(NSToolbar * __unused)toolbar itemForItemIdentifier:(NSString *)itemIdentifier willBeInsertedIntoToolbar:(BOOL __unused)flag {
-  if ([itemIdentifier isEqualToString:@"SearchBar"]) {
-    NSSearchField *searchField = [[NSSearchField alloc] init];
-    [searchField setFrameSize:NSMakeSize(400, searchField.intrinsicContentSize.height)];
-    [searchField setDelegate:self];
-    [searchField setRecentsAutosaveName:@"search"];
-    [searchField setPlaceholderString:@"Search..."];
-    [searchField setAction:@selector(handleOnSearch:)];
-    NSToolbarItem *item = [[NSToolbarItem alloc] initWithItemIdentifier:itemIdentifier];
-    [item setView:searchField];
-    return item;
-  }
-  
-  return nil;
-}
-
-
-- (NSArray *)toolbarAllowedItemIdentifiers:(__unused NSToolbar *)toolbar
+-(BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag
 {
-  return @[ NSToolbarFlexibleSpaceItemIdentifier, @"SearchBar"];
+  [self.windowController showWindow:self.window];
+  return !flag;
 }
 
-- (NSArray *)toolbarDefaultItemIdentifiers:(__unused NSToolbar *)toolbar
+-(void) applicationDidBecomeActive:(NSNotification *)notification
 {
-  return @[NSToolbarFlexibleSpaceItemIdentifier, @"SearchBar", NSToolbarFlexibleSpaceItemIdentifier];
-}
-
-
-- (IBAction)handleOnSearch:(id)sender {
-  [_bridge.eventDispatcher sendDeviceEventWithName:@"Search" body:[sender stringValue]];
+  [self.windowController showWindow:self.window];
 }
 
 

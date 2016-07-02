@@ -3,10 +3,12 @@
 #import "RCTBridge.h"
 #import "RCTEventDispatcher.h"
 
+@interface AudioPlayer()
+@property(nonatomic, strong) AVAudioPlayer* audioPlayer;
+@end
 
 @implementation AudioPlayer
 
-AVAudioPlayer *_audioPlayer;
 @synthesize bridge = _bridge;
 
 RCT_EXPORT_MODULE()

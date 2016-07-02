@@ -1,5 +1,14 @@
 import React from "react";
-import {Image, TouchableOpacity, StyleSheet, ListView, Text, TextInput, View, DeviceEventEmitter} from "react-native-desktop";
+import {
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  ListView,
+  Text,
+  TextInput,
+  View,
+  DeviceEventEmitter
+} from "react-native-desktop";
 import Icon from "react-native-vector-icons/FontAwesome";
 import PlaybackQueue from "./PlaybackQueue";
 import LoadingScreen from "./LoadingScreen";
@@ -9,39 +18,43 @@ import Subscribable from "Subscribable";
 export default React.createClass({
   mixins: [Subscribable.Mixin],
 
-  filterAlbums(albums, value) {
-    if (value) {
-      return albums.filter(a => a.title.toLocaleLowerCase().indexOf(value.toLocaleLowerCase()) >= 0 || a.artistName.toLocaleLowerCase().indexOf(value.toLocaleLowerCase()) >= 0);
-    } else {
-      return albums
-    }
-  },
-
   getInitialState() {
     const dataSource = new ListView.DataSource({
       rowHasChanged: (row1, row2) => true
     })
 
     return {
-      offset: 0,
-      pageSize: 100,
       albums: [],
+      onlyStarred: false,
       dataSource: dataSource.cloneWithRows([]),
     };
   },
 
   componentWillMount() {
     this.handleSearch = _.debounce(this.handleSearch, 100)
-    this.addListenerOn(DeviceEventEmitter, 'Search', this.handleSearch);
 
     this.setState({isLoading: true});
     this.props.connection.albums.findAll().then((res) => {
       this.setState({
         isLoading: false,
         albums: res.albums,
-        dataSource: this.state.dataSource.cloneWithRows(res.albums)
+        dataSource: this.state.dataSource.cloneWithRows(this.filterAlbums(res.albums, this.state.filter, this.state.onlyStarred))
       })
     });
+  },
+
+  filterAlbums(albums, value, onlyStarred = false) {
+    return albums.filter(a => {
+        return (onlyStarred ? a.userRating > 0 : true) && (value ? (a.title.toLocaleLowerCase().indexOf(value.toLocaleLowerCase()) >= 0 || a.artistName.toLocaleLowerCase().indexOf(value.toLocaleLowerCase()) >= 0) : true)
+      }
+    ).reverse()
+  },
+
+  handleOnlyStarredPress() {
+    this.setState({
+      onlyStarred: !this.state.onlyStarred,
+      dataSource: this.state.dataSource.cloneWithRows(this.filterAlbums(this.state.albums, this.state.filter, !this.state.onlyStarred))
+    })
   },
 
   handlePress(row) {
@@ -53,11 +66,12 @@ export default React.createClass({
     })
   },
 
-  performRate(row, rating) {
-    row.rate(rating).then(() => {
-      row.userRating = rating
-      this.setState({dataSource: this.state.dataSource.cloneWithRows(this.filterAlbums(this.state.albums, this.state.filter))})
-    })
+  handleSearch(value) {
+    this.setState({filter: value}, () => {
+      const matches = this.filterAlbums(this.state.albums, value, this.state.onlyStarred)
+      this.refs.listView.scrollTo({x: 0, y: 0});
+      this.setState({dataSource: this.state.dataSource.cloneWithRows(matches)});
+    });
   },
 
   handleStar(row, rating) {
@@ -68,9 +82,11 @@ export default React.createClass({
     }
   },
 
-  renderStar(row, index) {
-    return <Icon onPress={() => { this.handleStar(row, index + 1)} } suppressHighlighting={true} key={index}
-                 style={{margin: 2}} name={index <= row.userRating - 1 ? "star" : "star-o"} size={18}/>
+  performRate(row, rating) {
+    row.rate(rating).then(() => {
+      row.userRating = rating
+      this.setState({dataSource: this.state.dataSource.cloneWithRows(this.filterAlbums(this.state.albums, this.state.filter, this.state.onlyStarred))})
+    })
   },
 
   renderRow(row) {
@@ -97,12 +113,19 @@ export default React.createClass({
     return <View key={index} style={{height: 1, backgroundColor: "#ddd"}}/>
   },
 
-  handleSearch(value) {
-    this.setState({filter: value}, () => {
-      const matches = this.filterAlbums(this.state.albums, value)
-      this.refs.listView.scrollTo({x: 0, y: 0});
-      this.setState({dataSource: this.state.dataSource.cloneWithRows(matches)});
-    });
+  renderStar(row, index) {
+    return <Icon onPress={() => { this.handleStar(row, index + 1)} } suppressHighlighting={true} key={index}
+                 style={{margin: 2}} name={index <= row.userRating - 1 ? "star" : "star-o"} size={18}/>
+  },
+
+  renderToolbar() {
+    return (
+      <View style={{flexDirection: "row", backgroundColor: "#fbfbfb", alignItems: "center", padding: 8}}>
+        <TextInput style={{flex: 1, height: 23}} onChangeText={this.handleSearch} />
+        <View style={{width: 8}}/>
+        <Icon name={this.state.onlyStarred ? "star" : "star-o"} size={16} onPress={this.handleOnlyStarredPress}/>
+      </View>
+    )
   },
 
   render() {
@@ -111,12 +134,13 @@ export default React.createClass({
     } else {
       return (
         <View style={{flex: 1}}>
+          {this.renderToolbar()}
+          <View style={{height: 1, backgroundColor: "#ddd"} }/>
           <ListView ref="listView" dataSource={this.state.dataSource} renderRow={this.renderRow}
                     renderSeparator={this.renderSeparator}
           />
         </View>
       )
-
     }
   }
 });

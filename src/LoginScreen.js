@@ -23,12 +23,8 @@ export default React.createClass({
     }
   },
 
-  componentWillMount() {
-    AsyncStorage.getItem("previousAddress", (err, address) => {
-      if (address) {
-        this.performConnect(address)
-      }
-    });
+  handleConnectPress() {
+    this.performConnect(this.state.address)
   },
 
   performConnect(address) {
@@ -39,10 +35,6 @@ export default React.createClass({
     }).then(() => {
       AsyncStorage.setItem("previousAddress", address)
     });
-  },
-
-  handleConnectPress() {
-    performConnect(this.state.address)
   },
 
   performLogin() {
