@@ -160,7 +160,7 @@ export default React.createClass({
           {this.renderToolbar()}
           <View style={{height: 1, backgroundColor: "#ddd"} }/>
           <ListView ref="listView" dataSource={this.state.dataSource} renderRow={this.renderRow}
-                    renderSeparator={this.renderSeparator}
+                    renderSeparator={this.renderSeparator} showsVerticalScrollIndicator={true}
           />
         </View>
       )
