@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 import Subscribable from "Subscribable";
-import {Image, ListView, Text, View, TouchableOpacity} from 'react-native-desktop';
+import {Image, ListView, Text, View, TouchableOpacity} from "react-native-desktop";
 import PlaybackQueue from "./PlaybackQueue";
 
 export default React.createClass({
@@ -59,6 +59,7 @@ export default React.createClass({
   },
 
   render() {
-    return <ListView style={{flex: 1}} dataSource={this.state.dataSource} renderRow={this.renderRow} showsVerticalScrollIndicator={true} />
+    return <ListView style={{flex: 1}} dataSource={this.state.dataSource} renderRow={this.renderRow}
+                     showsVerticalScrollIndicator={true}/>
   }
 });

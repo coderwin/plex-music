@@ -26,9 +26,11 @@ PlaybackQueue = {
   },
 
   resume() {
-    AudioPlayer.resume()
-    this.isPlaying = true
-    this.events.emit("play", this.playlist[this.activeIndex])
+    if (item = this.playlist[this.activeIndex]) {
+      AudioPlayer.resume()
+      this.isPlaying = true
+      this.events.emit("play", item)
+    }
   },
 
   stop() {
@@ -69,8 +71,9 @@ PlaybackQueue = {
   },
 
   replace(playlist, shouldPlay = false) {
-    this.playlist = playlist
-    this.events.emit("change", playlist)
+    this.stop()
+    this.playlist = Array.from(playlist)
+    this.events.emit("change", this.playlist)
     if (shouldPlay) {
       this.playItemAtIndex(0)
     }

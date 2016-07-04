@@ -1,7 +1,6 @@
 import Axios from "axios";
 import {DOMParser} from "xmldom";
 import sortBy from "thenby";
-import _ from "lodash";
 
 export default function connect(endpoint) {
   function request(path, query = {}) {
@@ -23,7 +22,6 @@ export default function connect(endpoint) {
   };
 
   function buildAlbum(item) {
-    var ref;
     var thumbUrl = item.getAttribute("thumb") && (`${endpoint}${item.getAttribute("thumb")}`);
     return {
       id: item.getAttribute("ratingKey"),

@@ -10,7 +10,6 @@ import {
   TouchableWithoutFeedback
 } from "react-native-desktop";
 import Subscribable from "Subscribable";
-import Icon from "react-native-vector-icons/FontAwesome";
 import Playlist from "./Playlist";
 import NowPlaying from "./NowPlaying";
 import AlbumListScreen from "./AlbumListScreen";
