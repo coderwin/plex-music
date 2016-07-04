@@ -43,9 +43,27 @@ export default React.createClass({
     });
   },
 
-  filterAlbums(albums, value, onlyStarred = false) {
+  explodeSearchText(value) {
+    if (!value) {
+      return {query: null, filter: {}}
+    }
+
+    const filter = {}
+    const query = value.replace(/((\w+):(\w+)|(\w+):"([^"]+)"|(\w+):'([^']+)")/g, (match, _, key, value) => {
+      filter[key] = value
+      return ""
+    })
+
+    return {query: query.trim(), filter: filter}
+  },
+
+  filterAlbums(albums, searchText, onlyStarred = false) {
+    const {query, filter} = this.explodeSearchText(searchText)
     return albums.filter(a => {
-        return (onlyStarred ? a.userRating > 0 : true) && (value ? (a.title.toLocaleLowerCase().indexOf(value.toLocaleLowerCase()) >= 0 || a.artistName.toLocaleLowerCase().indexOf(value.toLocaleLowerCase()) >= 0) : true)
+        return (onlyStarred ? a.userRating > 0 : true) &&
+          (query ? (a.title.toLocaleLowerCase().indexOf(query.toLocaleLowerCase()) >= 0 || a.artistName.toLocaleLowerCase().indexOf(query.toLocaleLowerCase()) >= 0) : true) &&
+          (filter.year ? (a.year.indexOf(filter.year) >= 0) : true) &&
+          (filter.genre ? (a.genres.some(g => g.toLocaleLowerCase().indexOf(filter.genre.toLocaleLowerCase()) >= 0)) : true)
       }
     ).reverse()
   },
@@ -126,7 +144,7 @@ export default React.createClass({
   renderToolbar() {
     return (
       <View style={{flexDirection: "row", backgroundColor: "#fbfbfb", alignItems: "center", padding: 8}}>
-        <TextInput style={{flex: 1, height: 23}} onChangeText={this.handleSearch} />
+        <TextInput style={{flex: 1, height: 23}} onChangeText={this.handleSearch}/>
         <View style={{width: 8}}/>
         <Icon name={this.state.onlyStarred ? "star" : "star-o"} size={16} onPress={this.handleOnlyStarredPress}/>
       </View>
