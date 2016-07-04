@@ -100,8 +100,13 @@ export default React.createClass({
             <Text style={{fontWeight: "bold"}}>{row.title}</Text>
             <Text style={{color: "#888"}}>{row.artistName}</Text>
           </View>
-          <View style={{flexDirection: "row", alignItems: "center"}}>
-            <Text style={{marginRight: 10}}>{row.year}</Text>
+          <View style={{width: 10}}/>
+          <View style={{flex: 1, flexDirection: "column", alignItems: "flex-end"}}>
+            <Text style={{color: "#888"}}>{row.year}</Text>
+            <Text style={{color: "#888", fontSize: 12}}>{row.genres.join(", ")}</Text>
+          </View>
+          <View style={{width: 15}}/>
+          <View style={{flexDirection: "row"}}>
             {Array.from(Array(5).keys()).map((i) => this.renderStar(row, i))}
           </View>
         </View>

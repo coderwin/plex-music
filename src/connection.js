@@ -34,7 +34,7 @@ export default function connect(endpoint) {
       addedAt: item.getAttribute("addedAt") * 1000,
       playCount: item.getAttribute("viewCount"),
       tag: [],
-      genre: ((ref = item.Genre) != null ? ref.map(genre => genre.getAttribute("tag")) : void 0) || [],
+      genres: Array.prototype.slice.call(item.getElementsByTagName("Genre")).map(e => e.getAttribute("tag")),
       artwork: thumbUrl && (`${endpoint}/photo/:/transcode?url=${encodeURIComponent(thumbUrl)}&width=250&height=250&minSize=1`),
       rate(value) {
         return Axios.get(`${endpoint}/:/rate`, {
