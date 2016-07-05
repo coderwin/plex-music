@@ -24,7 +24,7 @@ export default React.createClass({
     if (item) {
       return (
         <View
-          style={{flex: 1, flexDirection: "row", alignItems: "center", backgroundColor: "#eee", padding: 10}}>
+          style={{flex: 1, flexDirection: "row", alignItems: "center", backgroundColor: "#f0f0f0", padding: 10}}>
           <Image style={{width: 64, height: 64, borderRadius: 4}} source={{uri: item.album.artwork}}/>
           <View style={{width: 10}}/>
           <View style={{flexDirection: "column"}}>

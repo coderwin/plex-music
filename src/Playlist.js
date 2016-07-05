@@ -41,7 +41,7 @@ export default React.createClass({
   },
 
   renderRow(row) {
-    const backgroundColor = this.state.activeItem == row ? "#eee" : null;
+    const backgroundColor = this.state.activeItem == row ? "#f0f0f0" : null;
 
     return (
       <TouchableOpacity onPress={() => { this.handlePress(row) }}>

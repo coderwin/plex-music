@@ -72,7 +72,7 @@ export default React.createClass({
   render() {
     return (
       <View
-        style={{flex: 1, flexDirection: "row", alignItems: "center", backgroundColor: "#eee", paddingHorizontal: 10}}>
+        style={{flex: 1, flexDirection: "row", alignItems: "center", backgroundColor: "#f0f0f0", paddingHorizontal: 10}}>
         <View style={{flex: 1, flexDirection: "row", alignItems: "center"}}>
           <Text>{formatDuration(this.state.currentTime)}</Text>
           <View style={{width: 10}}></View>

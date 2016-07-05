@@ -7,16 +7,47 @@ import {
   Text,
   TextInput,
   View,
+  InteractionManager,
   DeviceEventEmitter
 } from "react-native-desktop";
 import Icon from "react-native-vector-icons/FontAwesome";
 import PlaybackQueue from "./PlaybackQueue";
 import LoadingScreen from "./LoadingScreen";
+import Tab from "./Tab";
 import _ from "lodash";
 import Subscribable from "Subscribable";
+import firstBy from "thenby";
+
+const orderFn = {
+  alphabetically: firstBy("alphabetically", {ignoreCase: true}).thenBy("year", {direction: -1}).thenBy("title", {ignoreCase: true}),
+  userRating: firstBy("userRating", {direction: -1}).thenBy("artistName", {ignoreCase: true}).thenBy("year", {direction: -1}).thenBy("title", {ignoreCase: true}),
+  recentlyAdded: firstBy("addedAt", {direction: -1})
+}
+
+const match = {
+  string: (source) => (text) => text ? source.toLocaleLowerCase().indexOf(text.toLocaleLowerCase()) >= 0 : true,
+  array: (source) => (text) => source.some((s) => match.string(s)(text))
+}
+
+const predicateFn = {
+  artist: (row) => match.string(row.artistName),
+  year: (row) => match.string(row.year),
+  genre: (row) => match.array(row.genres),
+}
+
+const filterFn = {
+  query: (row) => (value) => (match.string(row.title)(value) || match.string(row.artistName)(value)),
+  predicates: (row) => (values) => Object.keys(predicateFn).every((key) => values[key] ? predicateFn[key](row)(values[key]) : true)
+}
 
 export default React.createClass({
   mixins: [Subscribable.Mixin],
+
+  tabs: {
+    alphabetically: "Alphabetically",
+    recentlyAdded: "Recently added",
+    userRating: "Rating",
+  },
 
   getInitialState() {
     const dataSource = new ListView.DataSource({
@@ -25,7 +56,12 @@ export default React.createClass({
 
     return {
       albums: [],
-      onlyStarred: false,
+
+      filter: {
+        query: null,
+        order: "alphabetically",
+        predicates: {}
+      },
       dataSource: dataSource.cloneWithRows([]),
     };
   },
@@ -38,41 +74,8 @@ export default React.createClass({
       this.setState({
         isLoading: false,
         albums: res.albums,
-        dataSource: this.state.dataSource.cloneWithRows(this.filterAlbums(res.albums, this.state.filter, this.state.onlyStarred))
-      })
+      }, () => this.performFilterAndSort())
     });
-  },
-
-  explodeSearchText(value) {
-    if (!value) {
-      return {query: null, filter: {}}
-    }
-
-    const filter = {}
-    const query = value.replace(/((\w+):(\w+)|(\w+):"([^"]+)"|(\w+):'([^']+)")/g, (match, _, key, value) => {
-      filter[key] = value
-      return ""
-    })
-
-    return {query: query.trim(), filter: filter}
-  },
-
-  filterAlbums(albums, searchText, onlyStarred = false) {
-    const {query, filter} = this.explodeSearchText(searchText)
-    return albums.filter(a => {
-        return (onlyStarred ? a.userRating > 0 : true) &&
-          (query ? (a.title.toLocaleLowerCase().indexOf(query.toLocaleLowerCase()) >= 0 || a.artistName.toLocaleLowerCase().indexOf(query.toLocaleLowerCase()) >= 0) : true) &&
-          (filter.year ? (a.year.indexOf(filter.year) >= 0) : true) &&
-          (filter.genre ? (a.genres.some(g => g.toLocaleLowerCase().indexOf(filter.genre.toLocaleLowerCase()) >= 0)) : true)
-      }
-    ).reverse()
-  },
-
-  handleOnlyStarredPress() {
-    this.setState({
-      onlyStarred: !this.state.onlyStarred,
-      dataSource: this.state.dataSource.cloneWithRows(this.filterAlbums(this.state.albums, this.state.filter, !this.state.onlyStarred))
-    })
   },
 
   handlePress(row) {
@@ -84,12 +87,13 @@ export default React.createClass({
     })
   },
 
-  handleSearch(value) {
-    this.setState({filter: value}, () => {
-      const matches = this.filterAlbums(this.state.albums, value, this.state.onlyStarred)
-      this.refs.listView.scrollTo({x: 0, y: 0});
-      this.setState({dataSource: this.state.dataSource.cloneWithRows(matches)});
-    });
+  handleSearch(text) {
+    const predicates = {}
+    const query = text.replace(/((\w+):(\w+)|(\w+):"([^"]+)"|(\w+):'([^']+)")/g, (match, _, key, value) => {
+      predicates[key] = value
+      return ""
+    })
+    this.performFilterAndSort({query: query.trim(), predicates: predicates}, true)
   },
 
   handleStar(row, rating) {
@@ -103,7 +107,25 @@ export default React.createClass({
   performRate(row, rating) {
     row.rate(rating).then(() => {
       row.userRating = rating
-      this.setState({dataSource: this.state.dataSource.cloneWithRows(this.filterAlbums(this.state.albums, this.state.filter, this.state.onlyStarred))})
+      this.performFilterAndSort()
+    })
+  },
+
+  performFilterAndSort(filter = {}, shouldScrollToTop = false) {
+    this.setState({filter: {...this.state.filter, ...filter}}, () => {
+      const {query, order} = this.state.filter
+
+      const matches = this.state.albums
+        .filter((row) => Object.keys(filterFn).every((key) => filterFn[key](row)(this.state.filter[key])))
+        .sort(orderFn[order]);
+
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(matches.reverse())
+      }, () => {
+        if (shouldScrollToTop) {
+          this.refs.listView.scrollTo({x: 0, y: 0})
+        }
+      });
     })
   },
 
@@ -121,7 +143,7 @@ export default React.createClass({
           <View style={{width: 10}}/>
           <View style={{flex: 1, flexDirection: "column", alignItems: "flex-end"}}>
             <Text style={{color: "#888"}}>{row.year}</Text>
-            <Text style={{color: "#888", fontSize: 12}}>{row.genres.join(", ")}</Text>
+            {row.genres.length > 0 && <Text style={{color: "#888", fontSize: 12}}>{row.genres.join(", ")}</Text>}
           </View>
           <View style={{width: 15}}/>
           <View style={{flexDirection: "row"}}>
@@ -141,12 +163,23 @@ export default React.createClass({
                  style={{margin: 2}} name={index <= row.userRating - 1 ? "star" : "star-o"} size={18}/>
   },
 
+  renderTab(key, title) {
+    return <Tab key={key} active={this.state.filter.order == key} title={title}
+                onPress={() => this.performFilterAndSort({order: key},  true)}/>
+  },
+
   renderToolbar() {
+    const {order} = this.state.filter
+
     return (
-      <View style={{flexDirection: "row", backgroundColor: "#fbfbfb", alignItems: "center", padding: 8}}>
-        <TextInput style={{flex: 1, height: 23}} onChangeText={this.handleSearch}/>
-        <View style={{width: 8}}/>
-        <Icon name={this.state.onlyStarred ? "star" : "star-o"} size={16} onPress={this.handleOnlyStarredPress}/>
+      <View style={{flexDirection: "column", backgroundColor: "#fbfbfb"}}>
+        <View style={{flexDirection: "row"}}>
+          {Object.keys(this.tabs).map((key) => this.renderTab(key, this.tabs[key]))}
+        </View>
+        <View style={{height: 1, backgroundColor: "#ddd"} }/>
+        <View style={{flex: 1, flexDirection: "column", padding: 8}}>
+          <TextInput style={{flex: 1, height: 23}} onChangeText={this.handleSearch}/>
+        </View>
       </View>
     )
   },
