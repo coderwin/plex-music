@@ -85,13 +85,49 @@
     NSMenuItem *containerItem = [[NSMenuItem alloc] init];
     NSMenu *rootMenu = [[NSMenu alloc] initWithTitle:@"" ];
     [containerItem setSubmenu:rootMenu];
-    [rootMenu addItemWithTitle:@"Quit Plex Music" action:@selector(terminate:) keyEquivalent:@"q"];
+    [rootMenu addItemWithTitle:@"Quit" action:@selector(terminate:) keyEquivalent:@"q"];
     [[NSApp mainMenu] addItem:containerItem];
+
+    NSMenuItem *editItemContainer = [[NSMenuItem alloc] init];
+    NSMenu *editMenu = [[NSMenu alloc] initWithTitle:@"Edit"];
+    [editItemContainer setSubmenu:editMenu];
+    [editMenu setAutoenablesItems:NO];
+    [editMenu addItem:[self addEditMenuItem:@"Undo" action:@selector(undo) key:@"z" ]];
+    [editMenu addItem:[self addEditMenuItem:@"Redo" action:@selector(redo) key:@"Z" ]];
+    [editMenu addItem:[self addEditMenuItem:@"Cut" action:@selector(cut:) key:@"x" ]];
+    [editMenu addItem:[self addEditMenuItem:@"Copy" action:@selector(copy:) key:@"c" ]];
+    [editMenu addItem:[self addEditMenuItem:@"Paste" action:@selector(paste:) key:@"v" ]];
+    [editMenu addItem:[self addEditMenuItem:@"SelectAll" action:@selector(selectAll:) key:@"a" ]];
+    [[NSApp mainMenu] addItem:editItemContainer];
+
 }
 
 - (id)firstResponder
 {
     return [self.window firstResponder];
+}
+
+
+- (NSMenuItem *)addEditMenuItem:(NSString *)title
+                         action:(SEL _Nullable)action
+                            key:(NSString *)key
+{
+  NSMenuItem * menuItem = [[NSMenuItem alloc] init];
+  [menuItem setTitle:title];
+  [menuItem setEnabled:YES];
+  [menuItem setAction:action];
+  [menuItem setKeyEquivalent:key];
+  return menuItem;
+}
+
+- (void)undo
+{
+  [[[self window] undoManager] undo];
+}
+
+- (void)redo
+{
+  [[[self window] undoManager] redo];
 }
 
 @end
