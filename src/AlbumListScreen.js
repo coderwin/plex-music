@@ -19,7 +19,7 @@ import Subscribable from "Subscribable";
 import firstBy from "thenby";
 
 const orderFn = {
-  alphabetically: firstBy("alphabetically", {ignoreCase: true}).thenBy("year", {direction: -1}).thenBy("title", {ignoreCase: true}),
+  alphabetically: firstBy("artistName", {ignoreCase: true}).thenBy("year", {direction: -1}).thenBy("title", {ignoreCase: true}),
   userRating: firstBy("userRating", {direction: -1}).thenBy("artistName", {ignoreCase: true}).thenBy("year", {direction: -1}).thenBy("title", {ignoreCase: true}),
   recentlyAdded: firstBy("addedAt", {direction: -1})
 }

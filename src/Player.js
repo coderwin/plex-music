@@ -4,17 +4,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import Subscribable from "Subscribable";
 import {formatDuration} from "./Support";
 import PlaybackQueue from "./PlaybackQueue";
-
-Button = React.createClass({
-  render() {
-    return (
-      <TouchableOpacity onPress={this.props.onPress}
-                        style={{padding: 10, backgroundColor: "white", borderWidth: 1, borderColor: "#ddd"}}>
-        <Icon name={this.props.iconName} size={18}/>
-      </TouchableOpacity>
-    )
-  }
-});
+import Button from './Button.js'
 
 export default React.createClass({
   mixins: [Subscribable.Mixin],
