@@ -172,7 +172,7 @@ export default React.createClass({
     const {order} = this.state.filter
 
     return (
-      <View style={{flexDirection: "column", backgroundColor: "#fbfbfb"}}>
+      <View style={{flexDirection: "column", backgroundColor: "#f0f0f0"}}>
         <View style={{flexDirection: "row"}}>
           {Object.keys(this.tabs).map((key) => this.renderTab(key, this.tabs[key]))}
         </View>
