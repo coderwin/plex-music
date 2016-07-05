@@ -25,14 +25,14 @@ export default function connect(endpoint) {
     var thumbUrl = item.getAttribute("thumb") && (`${endpoint}${item.getAttribute("thumb")}`);
     return {
       id: item.getAttribute("ratingKey"),
-      title: item.getAttribute("title"),
-      artistName: item.getAttribute("parentTitle"),
+      title: item.getAttribute("title").trim(),
+      artistName: item.getAttribute("parentTitle").trim(),
       year: item.getAttribute("year"),
       userRating: item.getAttribute("userRating"),
       addedAt: item.getAttribute("addedAt") * 1000,
       playCount: item.getAttribute("viewCount"),
       tag: [],
-      genres: Array.prototype.slice.call(item.getElementsByTagName("Genre")).map(e => e.getAttribute("tag")),
+      genres: Array.prototype.slice.call(item.getElementsByTagName("Genre")).map(e => e.getAttribute("tag").trim()),
       artwork: thumbUrl && (`${endpoint}/photo/:/transcode?url=${encodeURIComponent(thumbUrl)}&width=250&height=250&minSize=1`),
       rate(value) {
         return Axios.get(`${endpoint}/:/rate`, {
@@ -50,7 +50,7 @@ export default function connect(endpoint) {
     var thumbUrl = item.getAttribute("thumb") && (`${endpoint}${item.getAttribute("thumb")}`);
     return {
       id: item.getAttribute("ratingKey"),
-      name: item.getAttribute("title"),
+      name: item.getAttribute("title").trim(),
       addedAt: item.getAttribute("addedAt") * 1000,
       artwork: thumbUrl && (`${endpoint}/photo/:/transcode?url=${encodeURIComponent(thumbUrl)}&width=250&height=250&minSize=1`)
     };
@@ -92,8 +92,8 @@ export default function connect(endpoint) {
                   return {
                     id: item.getAttribute("ratingKey"),
                     number: item.getAttribute("index"),
-                    title: item.getAttribute("title"),
-                    artistName: item.getAttribute("grandparentTitle"),
+                    title: item.getAttribute("title").trim(),
+                    artistName: item.getAttribute("grandparentTitle").trim(),
                     albumId: item.getAttribute("grandparentRatingKey"),
                     duration: item.getAttribute("duration"),
                     path: item.getElementsByTagName("Part")[0].getAttribute("file"),
