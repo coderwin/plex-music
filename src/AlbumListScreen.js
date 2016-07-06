@@ -96,6 +96,11 @@ export default React.createClass({
     this.performFilterAndSort({query: query.trim(), predicates: predicates}, true)
   },
 
+  handleClear() {
+    this.refs.input.setNativeProps({text: ""})
+    this.performFilterAndSort({query: null, predicates: {}}, true)
+  },
+
   handleStar(row, rating) {
     if (row.userRating == rating) {
       this.performRate(row, 0)
@@ -125,8 +130,35 @@ export default React.createClass({
         if (shouldScrollToTop) {
           this.refs.listView.scrollTo({x: 0, y: 0})
         }
-      });
+      })
     })
+  },
+
+  replaceQueryAndPredicates(text, predicates) {
+    this.refs.input.setNativeProps({text: text})
+    this.performFilterAndSort({query: null, predicates: predicates})
+  },
+
+  handleArtistNamePress(artistName) {
+    this.replaceQueryAndPredicates(`artist:"${artistName}"`, {artist: artistName})
+  },
+
+  handleYearPress(year) {
+    this.replaceQueryAndPredicates(`year:${year}`, {year: year})
+  },
+
+  handleGenrePress(genre) {
+    this.replaceQueryAndPredicates(`genre:"${genre}"`, {genre: genre})
+  },
+
+  renderGenre(genre, index, row) {
+    return (
+      <View key={genre} style={{flexDirection: "row"}}>
+        <TouchableOpacity onPress={() => this.handleGenrePress(genre)}>
+          <Text style={{color: "#888", fontSize: 12}}>{genre}{index != row.genres.length - 1 && "/"}</Text>
+        </TouchableOpacity>
+      </View>
+    )
   },
 
   renderRow(row) {
@@ -138,12 +170,20 @@ export default React.createClass({
           <View style={{width: 10}}/>
           <View style={{flex: 1, flexDirection: "column"}}>
             <Text style={{fontWeight: "bold"}}>{row.title}</Text>
-            <Text style={{color: "#888"}}>{row.artistName}</Text>
+            <View style={{flexDirection: "row"}}>
+              <TouchableOpacity onPress={() => this.handleArtistNamePress(row.artistName)}>
+                <Text style={{color: "#888"}}>{row.artistName}</Text>
+              </TouchableOpacity>
+            </View>
           </View>
           <View style={{width: 10}}/>
           <View style={{flex: 1, flexDirection: "column", alignItems: "flex-end"}}>
-            <Text style={{color: "#888"}}>{row.year}</Text>
-            {row.genres.length > 0 && <Text style={{color: "#888", fontSize: 12}}>{row.genres.join(", ")}</Text>}
+            <View style={{flexDirection: "row"}}>
+              <TouchableOpacity onPress={() => this.handleYearPress(row.year)}>
+                <Text style={{color: "#888", fontSize: 12}}>{row.year}</Text>
+              </TouchableOpacity>
+            </View>
+            {row.genres.length > 0 && <View style={{flexDirection: "row"}}>{row.genres.map((g, i) => this.renderGenre(g, i, row))}</View>}
           </View>
           <View style={{width: 15}}/>
           <View style={{flexDirection: "row"}}>
@@ -172,13 +212,18 @@ export default React.createClass({
     const {order} = this.state.filter
 
     return (
-      <View style={{flexDirection: "column", backgroundColor: "#f0f0f0"}}>
-        <View style={{flexDirection: "row"}}>
+      <View style={{flexDirection: "column"}}>
+        <View style={{flexDirection: "row", backgroundColor: "#f0f0f0"}}>
           {Object.keys(this.tabs).map((key) => this.renderTab(key, this.tabs[key]))}
         </View>
         <View style={{height: 1, backgroundColor: "#ddd"} }/>
-        <View style={{flex: 1, flexDirection: "column", padding: 8}}>
-          <TextInput style={{flex: 1, height: 23}} onChangeText={this.handleSearch}/>
+        <View style={{flex: 1, flexDirection: "row", padding: 8, alignItems: "center"}}>
+          <TextInput ref="input" placeholder="Search..." placeholderTextColor="#888" focusRingType="none"
+                     bezeled={false} clearButtonMode="always"
+                     style={{flex: 1, fontSize: 16, backgroundColor: "transparent"}} onChangeText={this.handleSearch}/>
+          <View style={{width: 10}}/>
+          {(this.state.filter.query || Object.keys(this.state.filter.predicates).length > 0) &&
+          <Icon name="times-circle" size={16} color="#888" onPress={this.handleClear}/>}
         </View>
       </View>
     )
