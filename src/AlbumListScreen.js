@@ -70,10 +70,10 @@ export default React.createClass({
     this.handleSearch = _.debounce(this.handleSearch, 100)
 
     this.setState({isLoading: true});
-    this.props.connection.albums.findAll().then((res) => {
+    this.props.connection.albums.findAll().then((albums) => {
       this.setState({
         isLoading: false,
-        albums: res.albums,
+        albums: albums,
       }, () => this.performFilterAndSort())
     });
   },
