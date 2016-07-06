@@ -89,10 +89,13 @@ export default React.createClass({
 
   handleSearch(text) {
     const predicates = {}
-    const query = text.replace(/((\w+):(\w+)|(\w+):"([^"]+)"|(\w+):'([^']+)")/g, (match, _, key, value) => {
-      predicates[key] = value
-      return ""
-    })
+    const query = [/(\w+):(\w+)/g, /(\w+):"([^"]+)"/g, /(\w+):'([^']+)'/g].reduce((_query, regex) => {
+      return _query.replace(regex, (match, key, value) => {
+        predicates[key] = value
+        return ""
+      })
+    }, text)
+
     this.performFilterAndSort({query: query.trim(), predicates: predicates}, true)
   },
 
