@@ -34,7 +34,6 @@ const Application = React.createClass({
     this.setState({connection: connection})
   },
   handleDisconnect() {
-    console.log("handleDisconnect")
     this.setState({connection: null})
   },
   render(){

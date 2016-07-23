@@ -17,6 +17,8 @@
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		4A2FDC3C1D2A7FB30035C135 /* Plex Music.icns in Resources */ = {isa = PBXBuildFile; fileRef = 4A2FDC3B1D2A7FB30035C135 /* Plex Music.icns */; };
 		4A52F39F1D21CE1100EEAAB1 /* AudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A52F39E1D21CE1100EEAAB1 /* AudioPlayer.m */; };
+		4A9D44361D426C5400C21F16 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4A9D44351D426C5400C21F16 /* Images.xcassets */; };
+		4A9D44441D427C1200C21F16 /* RNVectorIconsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A9D44431D427C1200C21F16 /* RNVectorIconsManager.m */; };
 		4AB702B41D228A9400FE4F54 /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = 4AB702B31D228A9400FE4F54 /* Fonts */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 /* End PBXBuildFile section */
@@ -87,6 +89,9 @@
 		4A2FDC3B1D2A7FB30035C135 /* Plex Music.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = "Plex Music.icns"; sourceTree = "<group>"; };
 		4A52F39D1D21CE1100EEAAB1 /* AudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioPlayer.h; path = AudioPlayer/AudioPlayer.h; sourceTree = "<group>"; };
 		4A52F39E1D21CE1100EEAAB1 /* AudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AudioPlayer.m; path = AudioPlayer/AudioPlayer.m; sourceTree = "<group>"; };
+		4A9D44351D426C5400C21F16 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "Plex Music/Images.xcassets"; sourceTree = "<group>"; };
+		4A9D44421D427C1200C21F16 /* RNVectorIconsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RNVectorIconsManager.h; path = RNVectorIconsManager/RNVectorIconsManager.h; sourceTree = "<group>"; };
+		4A9D44431D427C1200C21F16 /* RNVectorIconsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RNVectorIconsManager.m; path = RNVectorIconsManager/RNVectorIconsManager.m; sourceTree = "<group>"; };
 		4AB702B31D228A9400FE4F54 /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Fonts; path = "../node_modules/react-native-vector-icons/Fonts"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native-desktop/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native-desktop/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
@@ -171,6 +176,15 @@
 			name = AudioPlayer;
 			sourceTree = "<group>";
 		};
+		4A9D44451D427C1E00C21F16 /* RNVectorIconsManager */ = {
+			isa = PBXGroup;
+			children = (
+				4A9D44421D427C1200C21F16 /* RNVectorIconsManager.h */,
+				4A9D44431D427C1200C21F16 /* RNVectorIconsManager.m */,
+			);
+			name = RNVectorIconsManager;
+			sourceTree = "<group>";
+		};
 		78C398B11ACF4ADC00677621 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -204,6 +218,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				4A9D44451D427C1E00C21F16 /* RNVectorIconsManager */,
+				4A9D44351D426C5400C21F16 /* Images.xcassets */,
 				4AB702B31D228A9400FE4F54 /* Fonts */,
 				4A52F39C1D21CE0400EEAAB1 /* AudioPlayer */,
 				13B07FAE1A68108700A75B9A /* PlexMusic */,
@@ -357,6 +373,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A9D44361D426C5400C21F16 /* Images.xcassets in Resources */,
 				4A2FDC3C1D2A7FB30035C135 /* Plex Music.icns in Resources */,
 				4AB702B41D228A9400FE4F54 /* Fonts in Resources */,
 			);
@@ -389,6 +406,7 @@
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				4A52F39F1D21CE1100EEAAB1 /* AudioPlayer.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				4A9D44441D427C1200C21F16 /* RNVectorIconsManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
