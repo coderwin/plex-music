@@ -5,6 +5,7 @@
 # Xcode
 #
 build/
+ModuleCache/
 *.pbxuser
 !default.pbxuser
 *.mode1v3
@@ -21,6 +22,7 @@ DerivedData
 *.ipa
 *.xcuserstate
 project.xcworkspace
+macos/info.plist
 
 # Android/IJ
 #

@@ -10,8 +10,6 @@
 #import <Cocoa/Cocoa.h>
 #import "RCTBridge.h"
 
-@class RCTBridge;
-
 @interface AppDelegate : NSObject <NSApplicationDelegate, NSWindowDelegate>
 
 @property (strong, nonatomic) NSWindow *window;

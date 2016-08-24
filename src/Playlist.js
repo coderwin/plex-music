@@ -1,65 +1,56 @@
-import React from "react";
-import Subscribable from "Subscribable";
-import {Image, ListView, Text, View, TouchableOpacity} from "react-native-desktop";
-import PlaybackQueue from "./PlaybackQueue";
+import React from 'react'
+import { observer } from 'mobx-react/native'
+import { autobind } from 'core-decorators'
+import { Image, ListView, Text, View, TouchableOpacity } from 'react-native-macos'
+import { computed, reaction } from 'mobx'
 
-export default React.createClass({
-  mixins: [Subscribable.Mixin],
+import PlaybackQueue from './PlaybackQueue'
 
-  getInitialState() {
-    const dataSource = new ListView.DataSource({
-      rowHasChanged: (row1, row2) => true
-    });
+const dataSource = new ListView.DataSource({
+  rowHasChanged: (row1, row2) => row1 !== row2
+})
 
-    return {
-      dataSource: dataSource.cloneWithRows(PlaybackQueue.playlist),
-    };
-  },
-
+@observer
+@autobind
+export default class extends React.Component {
   componentWillMount() {
-    this.addListenerOn(PlaybackQueue.events, 'change', this.handleChange);
-    this.addListenerOn(PlaybackQueue.events, 'play', this.handlePlay);
-    this.addListenerOn(PlaybackQueue.events, 'stop', this.handleStop);
-  },
+    reaction(() => PlaybackQueue.activeItem, () => { this.refs.listView.forceUpdate() })
+  }
 
-  handleChange(playlist) {
-    this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(Array.prototype.slice.call(playlist).reverse())
-    })
-  },
-
-  handlePlay(item) {
-    this.setState({activeItem: item})
-  },
+  @computed get dataSource() {
+    return dataSource.cloneWithRows(PlaybackQueue.playlist.toJS())
+  }
 
   handlePress(item) {
-    PlaybackQueue.playItemAtIndex(PlaybackQueue.playlist.indexOf(item));
-  },
+    PlaybackQueue.playItemAtIndex(PlaybackQueue.playlist.indexOf(item))
+  }
 
-  handleStop(item) {
-    this.setState({activeItem: null})
-  },
-
-  renderRow(row) {
-    const backgroundColor = this.state.activeItem == row ? "#f0f0f0" : null;
+  renderRow(row, index) {
+    const backgroundColor = row === PlaybackQueue.activeItem ? '#f0f0f0' : 'transparent'
 
     return (
       <TouchableOpacity onPress={() => { this.handlePress(row) }}>
-        <View
-          style={{flexDirection: "row", alignItems: "center", borderBottomWidth: 1, borderBottomColor: "#ddd", backgroundColor: backgroundColor, padding: 8}}>
-          <Image style={{width: 32, height: 32, borderRadius: 4}} source={{uri: row.album.artwork}}/>
-          <View style={{width: 10}}/>
-          <View style={{flexDirection: "column"}}>
-            <Text style={{fontWeight: "bold"}}>{row.track.title}</Text>
-            <Text style={{color: "#888"}}>{row.track.artistName}</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#ddd', backgroundColor, padding: 8 }}>
+          <Image style={{ width: 32, height: 32, borderRadius: 4 }} source={{ uri: row.album.artwork }} />
+          <View style={{ width: 10 }} />
+          <View style={{ flexDirection: 'column' }}>
+            <Text style={{ fontWeight: 'bold' }}>{row.track.title}</Text>
+            <Text style={{ color: '#888' }}>{row.track.artistName}</Text>
           </View>
         </View>
       </TouchableOpacity>
     )
-  },
+  }
 
   render() {
-    return <ListView style={{flex: 1}} dataSource={this.state.dataSource} renderRow={this.renderRow}
-                     showsVerticalScrollIndicator={true}/>
+    return (
+      <ListView
+        ref="listView"
+        style={{ flex: 1 }}
+        dataSource={this.dataSource}
+        renderRow={this.renderRow}
+        showsVerticalScrollIndicator
+      />
+    )
   }
-});
+}

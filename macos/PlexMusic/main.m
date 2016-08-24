@@ -13,7 +13,7 @@
  int main(int argc, char * argv[]) {
      @autoreleasepool {
          NSApplication * application = [NSApplication sharedApplication];
-         NSMenu *mainMenu = [[NSMenu alloc] initWithTitle:@"Plex Music"];
+         NSMenu *mainMenu = [[NSMenu alloc] initWithTitle:@"PlexMusic"];
          [NSApp setMainMenu:mainMenu];
          AppDelegate * appDelegate = [[AppDelegate alloc] init];
          [application setDelegate:appDelegate];
@@ -21,4 +21,3 @@
          return EXIT_SUCCESS;
      }
  }
-  

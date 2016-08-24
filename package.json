@@ -3,23 +3,32 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node node_modules/react-native-desktop/local-cli/cli.js start"
-  },
-  "browser": {
-    "react-native": "react-native-desktop"
+    "packager": "node node_modules/react-native-macos/local-cli/cli.js start",
+    "start": "macos/build/Products/Debug/PlexMusic.app/Contents/MacOS/PlexMusic",
+    "build": "cd macos && xcodebuild build -scheme PlexMusic -configuration Debug -derivedDataPath .",
+    "development": "npm run build && npm run start && npm run packager"
   },
   "dependencies": {
-    "axios": "^0.13.1",
-    "buffer": "^4.7.1",
-    "events": "^1.1.1",
-    "fuse.js": "^2.3.0",
-    "lodash": "^4.13.1",
-    "react": "^15.2.1",
-    "react-native-desktop": "ptmt/react-native-desktop#master",
-    "react-native-vector-icons": "^2.0.3",
-    "stream": "0.0.2",
+    "axios": "^0.14.0",
+    "core-decorators": "^0.12.3",
+    "mobx": "^2.5.2",
+    "mobx-react": "^3.5.6",
+    "moment": "^2.15.1",
+    "react": "15.3.2",
+    "react-native-macos": "ptmt/react-native-macos",
+    "react-native-vector-icons": "^2.1.0",
     "thenby": "^1.2.1",
-    "timers": "^0.1.1",
-    "xml2js": "^0.4.17"
+    "uuid": "^2.0.3",
+    "xmldom": "^0.1.22"
+  },
+  "devDependencies": {
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "concurrently": "^3.0.0",
+    "eslint": "^3.7.0",
+    "eslint-config-airbnb": "^12.0.0",
+    "eslint-import-resolver-babel-module": "^2.0.1",
+    "eslint-plugin-import": "^1.16.0",
+    "eslint-plugin-react": "^6.3.0",
+    "eslint-plugin-react-native": "^2.0.0"
   }
 }

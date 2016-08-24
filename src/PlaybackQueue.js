@@ -1,87 +1,102 @@
-EventEmitter = require('EventEmitter')
-import {DeviceEventEmitter, NativeModules} from "react-native-desktop";
-const {AudioPlayer} = NativeModules;
+import { observable, computed, transaction } from 'mobx'
+import { DeviceEventEmitter, NativeModules } from 'react-native-macos'
+import { autobind } from 'core-decorators'
 
-const events = new EventEmitter()
+const { AudioPlayer } = NativeModules
 
-setInterval(() => {
-  AudioPlayer.getCurrentTime((e, time) => {
-    events.emit("time", time)
-  })
-  AudioPlayer.getDuration((e, duration) => {
-    events.emit("duration", duration)
-  })
-}, 1000);
+@autobind
+class PlaybackQueue {
+  @observable currentTime = 0
+  @observable duration = 0
+  @observable activeIndex = -1
+  @observable playlist = []
+  @observable isPlaying = false
 
-PlaybackQueue = {
-  events: events,
-  isPlaying: false,
-  activeIndex: -1,
-  playlist: [],
+  @computed get activeItem() {
+    return this.playlist[this.activeIndex]
+  }
+
+  constructor() {
+    DeviceEventEmitter.addListener('AudioPlayerDidFinishPlaying', this.playNext)
+  }
+
+  startInterval() {
+    this.interval = setInterval(() => {
+      AudioPlayer.getCurrentTime((e, time) => {
+        this.currentTime = time
+      })
+      AudioPlayer.getDuration((e, duration) => {
+        this.duration = duration
+      })
+    }, 1000)
+  }
+
+  stopInterval() {
+    clearInterval(this.interval)
+  }
 
   pause() {
     AudioPlayer.pause()
+    this.stopInterval()
     this.isPlaying = false
-    this.events.emit("pause")
-  },
+  }
 
   resume() {
-    if (item = this.playlist[this.activeIndex]) {
+    if (this.activeItem) {
+      this.startInterval()
       AudioPlayer.resume()
       this.isPlaying = true
-      this.events.emit("play", item)
     }
-  },
+  }
 
   stop() {
     this.pause()
-    this.events.emit("stop")
     this.activeIndex = -1
-  },
+  }
 
   playItemAtIndex(index) {
-    if (item = this.playlist[index]) {
-      this.isPlaying = true
+    const item = this.playlist[index]
+    if (item) {
       this.activeIndex = index
       AudioPlayer.play(item.track.url)
-      this.events.emit("play", item)
+      this.isPlaying = true
+      this.startInterval()
     } else {
       this.stop()
+      this.stopInterval()
     }
-  },
+  }
 
   playPrev() {
     this.playItemAtIndex(this.activeIndex - 1)
-  },
+  }
 
   playNext() {
     this.playItemAtIndex(this.activeIndex + 1)
-  },
+  }
 
-  toggle(){
+  toggle() {
     if (this.isPlaying) {
-      this.pause();
+      this.pause()
     } else {
       this.resume()
     }
-  },
+  }
 
   seekTo(time) {
     AudioPlayer.setCurrentTime(time)
-  },
+  }
 
   replace(playlist, shouldPlay = false) {
     this.stop()
-    this.playlist = Array.from(playlist)
-    this.events.emit("change", this.playlist)
+    transaction(() => {
+      this.playlist.replace(playlist)
+    })
+
     if (shouldPlay) {
       this.playItemAtIndex(0)
     }
   }
 }
 
-DeviceEventEmitter.addListener('AudioPlayerDidFinishPlaying', () => PlaybackQueue.playNext());
-
-export default PlaybackQueue
-
-
+export default new PlaybackQueue()

@@ -1,96 +1,146 @@
-import React from "react";
-import Axios from "axios";
+import React from 'react'
+import Axios from 'axios'
+import { DOMParser } from 'xmldom'
+import UUID from 'uuid'
 
-import {
-  AsyncStorage,
-  Image,
-  TouchableOpacity,
-  StyleSheet,
-  ListView,
-  Text,
-  TextInput,
-  View,
-  TouchableWithoutFeedback
-} from "react-native-desktop";
-import connect from "./Connection";
-import LoadingScreen from "./LoadingScreen";
+import { View, TextInput, Button, AsyncStorage } from 'react-native-macos'
 
-export default React.createClass({
-  getInitialState() {
-    return {
-      isLoading: false,
-      address: "http://127.0.0.1:32400"
+import { observable, toJS } from 'mobx'
+import { observer } from 'mobx-react/native'
+
+import { autobind } from 'core-decorators'
+
+import DeviceList from './DeviceList'
+import LoadingScreen from './LoadingScreen'
+
+
+@autobind
+@observer
+export default class LoginScreen extends React.Component {
+  static propTypes = {
+    onConnection: React.PropTypes.func.isRequired
+  }
+
+  @observable isLoading = false
+  @observable isLoggedIn = false
+  @observable devices = []
+  @observable loginParams = {
+    login: '',
+    password: ''
+  }
+
+  componentWillMount() {
+    this.getLoginParams()
+  }
+
+  async getClientIdentifier() {
+    const value = await AsyncStorage.getItem('X-Plex-Client-Identifier')
+    if (value) {
+      return value
     }
-  },
 
-  handleConnectPress() {
-    this.performConnect(this.state.address)
-  },
+    const newValue = UUID.v4()
+    await AsyncStorage.setItem('X-Plex-Client-Identifier', newValue)
+    return newValue
+  }
 
-  performConnect(address) {
-    this.setState({isLoading: true})
-    connect(address).then(this.props.onConnection, (e) => {
-      this.setState({isLoading: false})
-      alert("Connection error.")
-    }).then(() => {
-      AsyncStorage.setItem("previousAddress", address)
-    });
-  },
-
-  performLogin() {
-    // TODO
-    // GET /api/v2/user HTTP/1.1
-
-    // X-Plex-Client-Identifier:f926e8da-97bf-4751-b525-b83c27f66ccd
-    // X-Plex-Device:OSX
-    // X-Plex-Device-Name:Plex Web (Chrome)
-    // X-Plex-Device-Screen-Resolution:2560x906,2560x1440
-    // X-Plex-Platform:Chrome
-    // X-Plex-Platform-Version:51.0
-    // X-Plex-Product:Plex Web
-    // X-Plex-Token:VN2hiSDNxbb5JxTG8RPW
-    // X-Plex-Version:2.7.2
-
-    // <user email="knoopx@gmail.com" id="181771" uuid="e43f59c5577ebb60" username="knoopx" title="knoopx" locale="" emailOnlyAuth="0" cloudSyncDevice="" thumb="https://plex.tv/users/e43f59c5577ebb60/avatar" authToken="VN2hiSDNxbb5JxTG8RPW" mailingListStatus="unsubscribed" mailingListActive="0" scrobbleTypes="" lastSignInAt="1467319285" restricted="0" home="0" guest="0" queueEmail="queue+sMy9nPSqHkXxRvGYgrUH@save.plex.tv" queueUid="61788f1adea1856d" homeSize="1" certificateVersion="2" rememberExpiresAt="1468528537">
-    //   <profile autoSelectAudio="1" defaultAudioLanguage="es" defaultSubtitleLanguage="en" autoSelectSubtitle="0"/>
-    //   <entitlements>
-    //     <entitlement id="xbox_one"/>
-    //   </entitlements>
-    // </user>
-
-    Axios.post("https://plex.tv/users/sign_in.json", {
-      "user[login]": "knoopx",
-      "user[password]": "kn11px",
-      remember_me: "1"
-    }).then((res) => {
-      console.log(res.data);
-      // https://plex.tv/api/v2/user
-    }, (res) => {
-      console.log(res.data)
-    })
-  },
-
-  render() {
-    if (this.state.isLoading) {
-      return <LoadingScreen message="Connecting..."/>
-    } else {
-      return (
-        <View
-          style={{flex: 1, paddingTop: 37, flexDirection: "column", alignItems: "center", justifyContent: "space-around"}}>
-          <View style={{width: 300, flexDirection: "column", alignItems:"center"}}>
-            <TextInput
-              style={{flex: 1, fontSize: 18, borderWidth: 0, height: 32}}
-              value={this.state.address}
-              placeholder={'Address'}
-              onChangeText={(value) => this.setState({address: value})}
-            />
-            <TouchableOpacity style={{flex: 1, marginTop: 10, padding: 10, backgroundColor: "white"}}
-                              onPress={this.handleConnectPress}>
-              <Text style={{fontWeight: "bold"}}>Connect</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      )
+  async getLoginParams() {
+    const loginParams = await AsyncStorage.getItem('loginParams')
+    if (loginParams) {
+      this.loginParams = JSON.parse(loginParams)
+      this.performLogin()
     }
   }
-});
+
+  async login(params) {
+    const headers = {
+      'X-Plex-Client-Identifier': await this.getClientIdentifier(),
+      'X-Plex-Device-Name': 'Plex Music',
+      'X-Plex-Product': 'Plex Music',
+      'X-Plex-Device': 'OSX',
+      Accept: 'application/json'
+    }
+
+    return Axios.post('https://plex.tv/api/v2/users/signin', params, { headers })
+  }
+
+  async performLogin() {
+    this.isLoading = true
+    try {
+      const auth = await this.login(toJS(this.loginParams))
+      const res = await Axios.get('https://plex.tv/api/resources', { params: { 'X-Plex-Token': auth.data.authToken, Accept: 'application/json' }, headers: { Accept: 'application/json' } })
+      const doc = new DOMParser().parseFromString(res.data)
+
+      this.devices = [...doc.getElementsByTagName('Device')].map(device => ({
+        name: device.getAttribute('name'),
+        product: device.getAttribute('product'),
+        productVersion: device.getAttribute('productVersion'),
+        platform: device.getAttribute('platform'),
+        platformVersion: device.getAttribute('platformVersion'),
+        clientIdentifier: device.getAttribute('clientIdentifier'),
+        createdAt: parseInt(device.getAttribute('createdAt')) * 1000,
+        lastSeenAt: parseInt(device.getAttribute('lastSeenAt')) * 1000,
+        provides: device.getAttribute('provides'),
+        owned: parseInt(device.getAttribute('owned')),
+        accessToken: device.getAttribute('accessToken'),
+        httpsRequired: parseInt(device.getAttribute('httpsRequired')),
+        synced: parseInt(device.getAttribute('synced')),
+        relay: parseInt(device.getAttribute('relay')),
+        publicAddressMatches: parseInt(device.getAttribute('publicAddressMatches')),
+        presence: parseInt(device.getAttribute('presence')),
+        connections: Array.from(device.getElementsByTagName('Connection')).map(connection => ({
+          protocol: connection.getAttribute('protocol'),
+          address: connection.getAttribute('address'),
+          port: parseInt(connection.getAttribute('port')),
+          uri: connection.getAttribute('uri'),
+          local: parseInt(connection.getAttribute('local'))
+        }))
+      })).filter(d => d.presence && d.provides === 'server')
+
+      console.log(this.devices)
+
+      await AsyncStorage.setItem('loginParams', JSON.stringify(this.loginParams))
+      this.isLoading = false
+      this.isLoggedIn = true
+    } catch (err) {
+      this.isLoading = false
+      // await AsyncStorage.removeItem('loginParams')
+      alert(err)
+    }
+  }
+
+  render() {
+    if (this.isLoading) {
+      return <LoadingScreen message="Connecting..." />
+    }
+
+    if (this.isLoggedIn) {
+      return <DeviceList devices={this.devices} onConnection={this.props.onConnection} />
+    }
+
+    return (
+      <View style={{ flex: 1, paddingTop: 37, flexDirection: 'column', alignItems: 'center', justifyContent: 'space-around' }}>
+        <View style={{ width: 300, flexDirection: 'column', alignItems: 'center' }}>
+          <TextInput
+            style={{ flex: 1, fontSize: 18, borderWidth: 0, height: 32 }}
+            value={this.loginParams.login}
+            placeholder={'Address'}
+            onChangeText={(value) => { this.loginParams.login = value }}
+          />
+          <TextInput
+            style={{ flex: 1, fontSize: 18, borderWidth: 0, height: 32 }}
+            value={this.loginParams.password}
+            placeholder={'Address'}
+            onChangeText={(value) => { this.loginParams.password = value }}
+          />
+          <Button
+            bezelStyle="rounded"
+            style={{ marginTop: 10, width: 100, height: 40 }}
+            onClick={() => this.performLogin()}
+            title="Connect"
+          />
+        </View>
+      </View>
+    )
+  }
+}

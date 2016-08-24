@@ -13,13 +13,12 @@
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
 		139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
+		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
-		4A2FDC3C1D2A7FB30035C135 /* Plex Music.icns in Resources */ = {isa = PBXBuildFile; fileRef = 4A2FDC3B1D2A7FB30035C135 /* Plex Music.icns */; };
-		4A52F39F1D21CE1100EEAAB1 /* AudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A52F39E1D21CE1100EEAAB1 /* AudioPlayer.m */; };
-		4A9D44361D426C5400C21F16 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4A9D44351D426C5400C21F16 /* Images.xcassets */; };
-		4A9D44441D427C1200C21F16 /* RNVectorIconsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A9D44431D427C1200C21F16 /* RNVectorIconsManager.m */; };
-		4AB702B41D228A9400FE4F54 /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = 4AB702B31D228A9400FE4F54 /* Fonts */; };
+		4ACC972C1D6DC6500050EDDB /* AudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4ACC972B1D6DC6500050EDDB /* AudioPlayer.m */; };
+		4ACC97371D6DC6560050EDDB /* RNVectorIconsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4ACC97361D6DC6560050EDDB /* RNVectorIconsManager.m */; };
+		4ACC975B1D6DDB190050EDDB /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = 4ACC975A1D6DDB190050EDDB /* Fonts */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 /* End PBXBuildFile section */
 
@@ -76,25 +75,24 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		00C302BB1ABCB91800DB3ED1 /* RCTImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTImage.xcodeproj; path = "../node_modules/react-native-desktop/Libraries/Image/RCTImage.xcodeproj"; sourceTree = "<group>"; };
-		00C302D31ABCB9D200DB3ED1 /* RCTNetwork.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTNetwork.xcodeproj; path = "../node_modules/react-native-desktop/Libraries/Network/RCTNetwork.xcodeproj"; sourceTree = "<group>"; };
-		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native-desktop/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
-		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native-desktop/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* Plex Music.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Plex Music.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		00C302BB1ABCB91800DB3ED1 /* RCTImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTImage.xcodeproj; path = "../node_modules/react-native-macos/Libraries/Image/RCTImage.xcodeproj"; sourceTree = "<group>"; };
+		00C302D31ABCB9D200DB3ED1 /* RCTNetwork.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTNetwork.xcodeproj; path = "../node_modules/react-native-macos/Libraries/Network/RCTNetwork.xcodeproj"; sourceTree = "<group>"; };
+		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native-macos/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
+		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native-macos/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* PlexMusic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlexMusic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = PlexMusic/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = PlexMusic/AppDelegate.m; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = PlexMusic/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = PlexMusic/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = PlexMusic/main.m; sourceTree = "<group>"; };
-		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native-desktop/React/React.xcodeproj"; sourceTree = "<group>"; };
-		4A2FDC3B1D2A7FB30035C135 /* Plex Music.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = "Plex Music.icns"; sourceTree = "<group>"; };
-		4A52F39D1D21CE1100EEAAB1 /* AudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioPlayer.h; path = AudioPlayer/AudioPlayer.h; sourceTree = "<group>"; };
-		4A52F39E1D21CE1100EEAAB1 /* AudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AudioPlayer.m; path = AudioPlayer/AudioPlayer.m; sourceTree = "<group>"; };
-		4A9D44351D426C5400C21F16 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "Plex Music/Images.xcassets"; sourceTree = "<group>"; };
-		4A9D44421D427C1200C21F16 /* RNVectorIconsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RNVectorIconsManager.h; path = RNVectorIconsManager/RNVectorIconsManager.h; sourceTree = "<group>"; };
-		4A9D44431D427C1200C21F16 /* RNVectorIconsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RNVectorIconsManager.m; path = RNVectorIconsManager/RNVectorIconsManager.m; sourceTree = "<group>"; };
-		4AB702B31D228A9400FE4F54 /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Fonts; path = "../node_modules/react-native-vector-icons/Fonts"; sourceTree = "<group>"; };
-		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native-desktop/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
-		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native-desktop/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
+		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native-macos/React/React.xcodeproj"; sourceTree = "<group>"; };
+		4ACC972A1D6DC6500050EDDB /* AudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioPlayer.h; sourceTree = "<group>"; };
+		4ACC972B1D6DC6500050EDDB /* AudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioPlayer.m; sourceTree = "<group>"; };
+		4ACC97351D6DC6560050EDDB /* RNVectorIconsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNVectorIconsManager.h; sourceTree = "<group>"; };
+		4ACC97361D6DC6560050EDDB /* RNVectorIconsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNVectorIconsManager.m; sourceTree = "<group>"; };
+		4ACC975A1D6DDB190050EDDB /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Fonts; path = "../node_modules/react-native-vector-icons/Fonts"; sourceTree = "<group>"; };
+		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native-macos/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
+		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native-macos/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,9 +148,9 @@
 		13B07FAE1A68108700A75B9A /* PlexMusic */ = {
 			isa = PBXGroup;
 			children = (
-				4A2FDC3B1D2A7FB30035C135 /* Plex Music.icns */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
+				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
@@ -167,22 +165,22 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		4A52F39C1D21CE0400EEAAB1 /* AudioPlayer */ = {
+		4ACC97291D6DC6500050EDDB /* AudioPlayer */ = {
 			isa = PBXGroup;
 			children = (
-				4A52F39D1D21CE1100EEAAB1 /* AudioPlayer.h */,
-				4A52F39E1D21CE1100EEAAB1 /* AudioPlayer.m */,
+				4ACC972A1D6DC6500050EDDB /* AudioPlayer.h */,
+				4ACC972B1D6DC6500050EDDB /* AudioPlayer.m */,
 			);
-			name = AudioPlayer;
+			path = AudioPlayer;
 			sourceTree = "<group>";
 		};
-		4A9D44451D427C1E00C21F16 /* RNVectorIconsManager */ = {
+		4ACC97341D6DC6560050EDDB /* RNVectorIconsManager */ = {
 			isa = PBXGroup;
 			children = (
-				4A9D44421D427C1200C21F16 /* RNVectorIconsManager.h */,
-				4A9D44431D427C1200C21F16 /* RNVectorIconsManager.m */,
+				4ACC97351D6DC6560050EDDB /* RNVectorIconsManager.h */,
+				4ACC97361D6DC6560050EDDB /* RNVectorIconsManager.m */,
 			);
-			name = RNVectorIconsManager;
+			path = RNVectorIconsManager;
 			sourceTree = "<group>";
 		};
 		78C398B11ACF4ADC00677621 /* Products */ = {
@@ -218,13 +216,12 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				4A9D44451D427C1E00C21F16 /* RNVectorIconsManager */,
-				4A9D44351D426C5400C21F16 /* Images.xcassets */,
-				4AB702B31D228A9400FE4F54 /* Fonts */,
-				4A52F39C1D21CE0400EEAAB1 /* AudioPlayer */,
+				4ACC97341D6DC6560050EDDB /* RNVectorIconsManager */,
+				4ACC97291D6DC6500050EDDB /* AudioPlayer */,
 				13B07FAE1A68108700A75B9A /* PlexMusic */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
+				4ACC975A1D6DDB190050EDDB /* Fonts */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -233,7 +230,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* Plex Music.app */,
+				13B07F961A680F5B00A75B9A /* PlexMusic.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -241,9 +238,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		13B07F861A680F5B00A75B9A /* Plex Music */ = {
+		13B07F861A680F5B00A75B9A /* PlexMusic */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Plex Music" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "PlexMusic" */;
 			buildPhases = (
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
@@ -254,9 +251,9 @@
 			);
 			dependencies = (
 			);
-			name = "Plex Music";
+			name = PlexMusic;
 			productName = "Hello World";
-			productReference = 13B07F961A680F5B00A75B9A /* Plex Music.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* PlexMusic.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -268,7 +265,7 @@
 				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = Facebook;
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Plex Music" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "PlexMusic" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -311,7 +308,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* Plex Music */,
+				13B07F861A680F5B00A75B9A /* PlexMusic */,
 			);
 		};
 /* End PBXProject section */
@@ -373,9 +370,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4A9D44361D426C5400C21F16 /* Images.xcassets in Resources */,
-				4A2FDC3C1D2A7FB30035C135 /* Plex Music.icns in Resources */,
-				4AB702B41D228A9400FE4F54 /* Fonts in Resources */,
+				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				4ACC975B1D6DDB190050EDDB /* Fonts in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -394,7 +390,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "../node_modules/react-native-desktop/packager/react-native-xcode.sh";
+			shellScript = "../node_modules/react-native-macos/packager/react-native-xcode.sh";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -404,9 +400,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
-				4A52F39F1D21CE1100EEAAB1 /* AudioPlayer.m in Sources */,
+				4ACC972C1D6DC6500050EDDB /* AudioPlayer.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
-				4A9D44441D427C1200C21F16 /* RNVectorIconsManager.m in Sources */,
+				4ACC97371D6DC6560050EDDB /* RNVectorIconsManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -422,7 +418,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(SRCROOT)/../node_modules/react-native-desktop/React/**",
+					"$(SRCROOT)/../node_modules/react-native-macos/React/**",
 				);
 				INFOPLIST_FILE = PlexMusic/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -430,7 +426,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_NAME = "Plex Music";
+				PRODUCT_NAME = PlexMusic;
 			};
 			name = Debug;
 		};
@@ -442,7 +438,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(SRCROOT)/../node_modules/react-native-desktop/React/**",
+					"$(SRCROOT)/../node_modules/react-native-macos/React/**",
 				);
 				INFOPLIST_FILE = PlexMusic/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -450,7 +446,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_NAME = "Plex Music";
+				PRODUCT_NAME = PlexMusic;
 			};
 			name = Release;
 		};
@@ -492,7 +488,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(SRCROOT)/../node_modules/react-native-desktop/React/**",
+					"$(SRCROOT)/../node_modules/react-native-macos/React/**",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -532,7 +528,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(SRCROOT)/../node_modules/react-native-desktop/React/**",
+					"$(SRCROOT)/../node_modules/react-native-macos/React/**",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -545,7 +541,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Plex Music" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "PlexMusic" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -554,7 +550,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Plex Music" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "PlexMusic" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,

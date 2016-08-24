@@ -1,0 +1,10 @@
+[ignore]
+<PROJECT_ROOT>/React/.*
+<PROJECT_ROOT>/macos/.*
+
+[include]
+
+[libs]
+
+[options]
+all=true

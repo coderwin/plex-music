@@ -1,26 +1,26 @@
-import React from "react";
-import {TouchableOpacity, Text, View, StyleSheet} from "react-native-desktop";
+import React from 'react'
+import { TouchableOpacity, Text, View, StyleSheet } from 'react-native-macos'
 
 const touchableStyle = StyleSheet.create({
   default: {
     flex: 1,
-    alignItems: "center",
+    alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 8,
-    backgroundColor: "#f0f0f0"
+    backgroundColor: '#f0f0f0'
   },
   active: {
-    backgroundColor: "white"
+    backgroundColor: 'white'
   }
 })
 
 const textStyle = StyleSheet.create({
   active: {
-    fontWeight: "bold",
+    fontWeight: 'bold'
   }
-});
+})
 
-module.exports = function (props) {
+export default function (props) {
   return (
     <TouchableOpacity {...props} style={[touchableStyle.default, props.active && touchableStyle.active]}>
       <Text style={props.active && textStyle.active}>{props.title}</Text>

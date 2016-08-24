@@ -1,41 +1,27 @@
-import React from "react";
-import {Image, Text, View, TouchableWithoutFeedback} from "react-native-desktop";
-import PlaybackQueue from "./PlaybackQueue";
-import Subscribable from "Subscribable";
+import React from 'react'
+import { observer } from 'mobx-react/native'
+import { Image, Text, View } from 'react-native-macos'
 
-export default React.createClass({
-  mixins: [Subscribable.Mixin],
-  getInitialState() {
-    return {
-      item: PlaybackQueue.playlist[PlaybackQueue.activeIndex]
-    }
-  },
+import PlaybackQueue from './PlaybackQueue'
 
-  componentWillMount(){
-    this.addListenerOn(PlaybackQueue.events, 'play', this.handlePlay);
-  },
-
-  handlePlay(activeItem) {
-    this.setState({item: activeItem})
-  },
-
+@observer
+export default class NowPlaying extends React.Component {
   render() {
-    const item = this.state.item
-    if (item) {
+    const { activeItem } = PlaybackQueue
+    if (activeItem) {
       return (
-        <View
-          style={{flex: 1, flexDirection: "row", alignItems: "center", backgroundColor: "#f0f0f0", padding: 10}}>
-          <Image style={{width: 64, height: 64, borderRadius: 4}} source={{uri: item.album.artwork}}/>
-          <View style={{width: 10}}/>
-          <View style={{flexDirection: "column"}}>
-            <Text style={{fontWeight: "bold"}}>{item.track.title}</Text>
-            <Text>{item.album.title}</Text>
-            <Text style={{color: "#888"}}>{item.track.artistName}</Text>
+        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', backgroundColor: '#f0f0f0', padding: 10 }}>
+          <Image style={{ width: 64, height: 64, borderRadius: 4 }} source={{ uri: activeItem.album.artwork }} />
+          <View style={{ width: 10 }} />
+          <View style={{ flexDirection: 'column' }}>
+            <Text style={{ fontWeight: 'bold' }}>{activeItem.track.title}</Text>
+            <Text>{activeItem.album.title}</Text>
+            <Text style={{ color: '#888' }}>{activeItem.track.artistName}</Text>
           </View>
         </View>
       )
-    } else {
-      return <View style={{flex: 1}}/>
     }
-  },
-});
+
+    return <View style={{ flex: 1 }} />
+  }
+}
