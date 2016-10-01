@@ -2,18 +2,19 @@ import React from 'react'
 import { observable } from 'mobx'
 import { observer } from 'mobx-react/native'
 import { autobind } from 'core-decorators'
-import { AsyncStorage, Text, View } from 'react-native-macos'
+import { Text, View } from 'react-native-macos'
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 import ServerScreen from './ServerScreen'
 import LoginScreen from './LoginScreen'
+import Connection from './Connection'
 
 @observer
 @autobind
 export default class RootLayout extends React.Component {
-  @observable connection
+  @observable connection: Connection;
 
-  handleConnection(connection) {
+  handleConnection(connection: Connection) {
     this.connection = connection
   }
 

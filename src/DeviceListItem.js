@@ -8,9 +8,9 @@ import connect from './Connection'
 
 @autobind
 export default class DeviceListItem extends React.Component {
-  static propTypes = {
-    onConnection: React.PropTypes.func.isRequired,
-    device: React.PropTypes.object.isRequired
+  props: {
+    onConnection: () => *,
+    device: Object
   }
 
   async onPress() {

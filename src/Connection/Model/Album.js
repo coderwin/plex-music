@@ -1,15 +1,10 @@
-import Axios from 'axios'
+import Model from './Model'
 
-export default class Album {
-  constructor(connection, props) {
-    this.connection = connection
-    Object.assign(this, props)
-  }
-
+export default class Album extends Model {
   rate(rating: number) {
     const { endpoint, token } = this.connection
 
-    return Axios.get(`${endpoint}/:/rate?X-Plex-Token=${encodeURIComponent(token)}`, {
+    return this.connection.request(`${endpoint}/:/rate?X-Plex-Token=${encodeURIComponent(token)}`, {
       params: {
         key: this.id,
         identifier: 'com.plexapp.plugins.library',

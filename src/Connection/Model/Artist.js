@@ -1,4 +1,6 @@
-export default class Artist {
+import Model from './Model'
+
+export default class Artist extends Model {
   static parse(item, connection) {
     const { endpoint, token } = connection
     const thumbUrl = item.thumb && (`${endpoint}${item.thumb}`)

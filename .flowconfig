@@ -1,6 +1,7 @@
 [ignore]
 <PROJECT_ROOT>/React/.*
 <PROJECT_ROOT>/macos/.*
+<PROJECT_ROOT>/node_modules/.+\.\(js\|css\|png\|flow\)$
 
 [include]
 
@@ -8,3 +9,7 @@
 
 [options]
 all=true
+esproposal.decorators=ignore
+esproposal.export_star_as=enable
+esproposal.class_static_fields=enable
+esproposal.class_instance_fields=enable

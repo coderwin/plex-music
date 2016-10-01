@@ -2,6 +2,7 @@
   "parser": "babel-eslint",
   "extends": "airbnb",
   "rules": {
+    "class-methods-use-this": "off",
     "no-underscore-dangle": "off",
     "max-len": ["off"],
     "react/jsx-filename-extension": ["off"],
